@@ -1,15 +1,20 @@
 package com.http.handlers;
 
+
+import com.base.TokenGenerator;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.io.OutputStream;
 
 public class LoginHandler implements HttpHandler {
     static final ObjectMapper mapper = new ObjectMapper();
-    static final String VALID_TOKEN = "secret-token"; // Replace with real token logic
+    private final Logger LOGGER= LogManager.getLogger(LoginHandler.class);
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         ObjectNode requestJson = (ObjectNode) mapper.readTree(exchange.getRequestBody());
@@ -18,8 +23,11 @@ public class LoginHandler implements HttpHandler {
 
         if ("admin".equals(username) && "secret".equals(password)) {
             ObjectNode responseJson = mapper.createObjectNode();
+            TokenGenerator tokenGenerator = TokenGenerator.INSTANCE;
+            tokenGenerator.generate();
 
-            responseJson.put("token", VALID_TOKEN);
+            LOGGER.info(" token = {}", tokenGenerator.getToken());
+            responseJson.put("token", tokenGenerator.getToken());
 
             byte[] responseBytes = mapper.writeValueAsBytes(responseJson);
             exchange.getResponseHeaders().add("Content-Type", "application/json");

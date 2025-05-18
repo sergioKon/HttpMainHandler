@@ -1,29 +1,20 @@
 package com.http.handlers;
 
+import com.base.Authorization;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-
 import java.io.IOException;
 
-import static com.http.handlers.LoginHandler.VALID_TOKEN;
 
-public class ProtectedHandler implements HttpHandler {
+public class ProtectedHandler implements HttpHandler, Authorization {
     @Override
-    public void handle(HttpExchange exchange) throws IOException {
-        String authHeader = exchange.getRequestHeaders().getFirst("Authorization");
-
-        if (authHeader == null || !authHeader.equals("Bearer " + VALID_TOKEN)) {
-            String error = "{\"error\":\"Unauthorized\"}";
-            exchange.sendResponseHeaders(401, error.length());
-            exchange.getResponseBody().write(error.getBytes());
-            exchange.close();
-            return;
+    public void handle(HttpExchange exchange)  throws IOException {
+        boolean valid =validate(exchange);
+        if(valid) {
+            String msg = "{\"message\":\"Access granted to protected resource\"}";
+            Response response = new Response(200, msg);
+            exchange.getResponseHeaders().add("Content-Type", "application/json");
+            response.send(exchange);
         }
-
-        String response = "{\"message\":\"Access granted to protected resource\"}";
-        exchange.getResponseHeaders().add("Content-Type", "application/json");
-        exchange.sendResponseHeaders(200, response.length());
-        exchange.getResponseBody().write(response.getBytes());
-        exchange.close();
     }
 }
