@@ -5,24 +5,40 @@ import com.http.handlers.ProtectedHandler;
 import com.sun.net.httpserver.HttpServer;
 import org.apache.logging.log4j.*;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.apache.logging.log4j.core.config.Configurator;
 import java.net.InetSocketAddress;
+import java.util.Properties;
 
 public class Init {
     private static final Logger LOGGER = LogManager.getLogger(Init.class);
-    public static void main(String[] args) throws IOException {
-        final int port = 8000;
-        final int backlog =0;
+    static Properties props = new Properties();
+    public static void main(String[] args) {
+        props.setProperty("backlog","0");
+        try (FileInputStream fis = new FileInputStream("config.properties")) {
+            props.load(fis);
+        } catch (IOException e) {
+           LOGGER.fatal(" cannot load property file");
+           System.exit(-1);
+        }
+        final int port = Integer.parseInt(props.getProperty("port"));
+        final int backlog = Integer.parseInt(props.getProperty("backlog"));
 
-        HttpServer server = HttpServer.create(new InetSocketAddress(port), backlog);
-        server.createContext("/login", new LoginHandler());
-        server.createContext("/protected", new ProtectedHandler());
-        server.setExecutor(null);
-        server.start();
+        HttpServer server = null;
+        try {
+            server = HttpServer.create(new InetSocketAddress(port), backlog);
+            server.createContext("/login", new LoginHandler());
+            server.createContext("/protected", new ProtectedHandler());
+            server.setExecutor(null);
+            server.start();
 
-        Configurator.setRootLevel(Level.INFO);
-        LOGGER.info("Server running at http://localhost:{}", port);
+            Configurator.setRootLevel(Level.INFO);
+            LOGGER.info("Server running at http://localhost:{}", port);
+        } catch (IOException e) {
+           LOGGER.fatal(" cannot run server check if port is a busy");
+        }
     }
 }
