@@ -6,7 +6,6 @@ import com.sun.net.httpserver.HttpServer;
 import org.apache.logging.log4j.*;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.apache.logging.log4j.core.config.Configurator;
@@ -27,7 +26,7 @@ public class Init {
         final int port = Integer.parseInt(props.getProperty("port"));
         final int backlog = Integer.parseInt(props.getProperty("backlog"));
 
-        HttpServer server = null;
+        HttpServer server;
         try {
             server = HttpServer.create(new InetSocketAddress(port), backlog);
             server.createContext("/login", new LoginHandler());
