@@ -7,10 +7,10 @@ import java.util.UUID
 
 object TokenGenerator{
     var token: String = ""
-    var timeout: Long=0;
+    var timeout: Long=0
 
     fun generate()  {
-        token= UUID.randomUUID().toString();
+        token= UUID.randomUUID().toString()
         val props = Properties()
         val inputStream = ClassLoader.getSystemResourceAsStream("config.properties")
         props.load(inputStream)
@@ -23,7 +23,7 @@ object TokenGenerator{
         val timer = Timer()
         timer.scheduleAtFixedRate(object : TimerTask() {
             override fun run() {
-                token= UUID.randomUUID().toString();
+                token= UUID.randomUUID().toString()
             }
         }, 0, (timeout*1000))
     }

@@ -3,7 +3,6 @@ package com.http.handlers;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
-import java.util.concurrent.Exchanger;
 
 public class Response {
     private final int code;
