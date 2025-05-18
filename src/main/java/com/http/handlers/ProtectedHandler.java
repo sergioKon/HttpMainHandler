@@ -1,6 +1,7 @@
 package com.http.handlers;
 
 import com.base.Authorization;
+import com.http.response.Result;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import java.io.IOException;
@@ -12,9 +13,9 @@ public class ProtectedHandler implements HttpHandler, Authorization {
         boolean valid =validate(exchange);
         if(valid) {
             String msg = "{\"message\":\"Access granted to protected resource\"}";
-            Response response = new Response(200, msg);
+            Result result = new Result(200, msg);
             exchange.getResponseHeaders().add("Content-Type", "application/json");
-            response.send(exchange);
+            result.send(exchange);
         }
     }
 }
