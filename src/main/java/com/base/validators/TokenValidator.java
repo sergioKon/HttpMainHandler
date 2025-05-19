@@ -1,12 +1,13 @@
-package com.base;
+package com.base.validators;
 
 
+import com.base.TokenGenerator;
 import com.http.response.Result;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
 
-public interface Authorization {
+public interface TokenValidator {
      default boolean validate(HttpExchange exchange) throws IOException {
          String authHeader = exchange.getRequestHeaders().getFirst("Authorization");
          if (authHeader == null || !authHeader.equals("Bearer " + TokenGenerator.INSTANCE.getToken())) {

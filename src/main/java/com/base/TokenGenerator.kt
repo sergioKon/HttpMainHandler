@@ -16,7 +16,8 @@ object TokenGenerator{
         val props = Properties()
         val inputStream = ClassLoader.getSystemResourceAsStream("config.properties")
         props.load(inputStream)
-        timeout= (props.getProperty("tokenTimeout")).toLong()
+
+        timeout= (Init.props.getProperty("tokenTimeout")).toLong()
         LOGGER.debug(" token time out = "+ timeout+ "sec")
         startTimer()
     }

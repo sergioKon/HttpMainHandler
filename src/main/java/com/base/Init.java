@@ -9,16 +9,18 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 import org.apache.logging.log4j.core.config.Configurator;
+
+import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.util.Properties;
 
 public class Init {
     private static final Logger LOGGER = LogManager.getLogger(Init.class);
-    static Properties props = new Properties();
+    public static Properties props = new Properties();
     public static void main(String[] args) {
         props.setProperty("backlog","0");
-        try (FileInputStream fis = new FileInputStream("config.properties")) {
-            props.load(fis);
+        try (InputStream inputStream = ClassLoader.getSystemResourceAsStream("config.properties")) {
+            props.load(inputStream);
         } catch (IOException e) {
            LOGGER.fatal(" cannot load property file");
            System.exit(-1);

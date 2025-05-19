@@ -1,6 +1,7 @@
 package com.http.handlers;
 
 
+import com.base.LoginUser;
 import com.base.TokenGenerator;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.sun.net.httpserver.HttpExchange;
@@ -10,6 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 public class LoginHandler implements HttpHandler {
@@ -17,7 +19,14 @@ public class LoginHandler implements HttpHandler {
     private final Logger LOGGER= LogManager.getLogger(LoginHandler.class);
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        ObjectNode requestJson = (ObjectNode) mapper.readTree(exchange.getRequestBody());
+
+        InputStream bodyStream = exchange.getRequestBody();
+
+        String json = new String( bodyStream.readAllBytes());
+        ObjectMapper mapper = new ObjectMapper();
+        LoginUser loginUser = mapper.readValue(json, LoginUser.class);
+
+        ObjectNode requestJson = (ObjectNode) mapper.readTree( exchange.getRequestBody());
         String username = requestJson.get("username").asText();
         String password = requestJson.get("password").asText();
 
