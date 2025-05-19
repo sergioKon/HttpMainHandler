@@ -2,6 +2,7 @@ package com.http.handlers;
 
 
 import com.base.validators.TokenValidator;
+import com.http.response.HttpStatus;
 import com.http.response.Result;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -14,7 +15,7 @@ public class ProtectedHandler implements HttpHandler, TokenValidator {
         boolean valid =TokenValidator.super.validate(exchange);
         if(valid) {
             String msg = "{\"message\":\"Access granted to protected resource\"}";
-            Result result = new Result(200, msg);
+            Result result = new Result(HttpStatus.OK);
             exchange.getResponseHeaders().add("Content-Type", "application/json");
             result.send(exchange);
         }

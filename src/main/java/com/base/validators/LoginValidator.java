@@ -4,6 +4,7 @@ import com.base.Init;
 import com.base.LoginUser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.http.response.HttpStatus;
 import com.sun.net.httpserver.HttpExchange;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,12 +26,16 @@ public interface LoginValidator {
                 logger.info(" login success");
             }
             else {
-                logger.fatal("invalid login data ");
+                HttpStatus httpStatus= HttpStatus.UNAUTHORIZED;
+                String error = httpStatus.getDescription();
+                exchange.sendResponseHeaders(httpStatus.getCode(), error.length());
+                exchange.getResponseBody().write(error.getBytes());
+                exchange.close();
                 throw new IOException(" can't login " );
             }
 
         } catch (IOException e) {
-           logger.fatal(e);
+          logger.error("An error occurred",e);
         }
     }
 }
