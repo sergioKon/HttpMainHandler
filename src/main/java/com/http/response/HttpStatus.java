@@ -26,15 +26,6 @@ public enum HttpStatus {
         this.description = description;
     }
 
-    public static HttpStatus getStatusFromCode(int code) {
-        for (HttpStatus status : HttpStatus.values()) {
-            if (status.getCode() == code) {
-                return status;
-            }
-        }
-        return UNKNOWN;
-    }
-
     public int getCode() {
         return code;
     }

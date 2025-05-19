@@ -11,13 +11,14 @@ import java.io.IOException;
 
 public class ProtectedHandler implements HttpHandler, TokenValidator {
     @Override
-    public void handle(HttpExchange exchange)  throws IOException {
-        boolean valid =TokenValidator.super.validate(exchange);
+    public void handle(HttpExchange httpExchange)  throws IOException {
+        boolean valid =TokenValidator.super.validate(httpExchange);
         if(valid) {
             String msg = "{\"message\":\"Access granted to protected resource\"}";
-            Result result = new Result(HttpStatus.OK);
-            exchange.getResponseHeaders().add("Content-Type", "application/json");
-            result.send(exchange);
+            Result result = new Result(httpExchange, HttpStatus.OK);
+            httpExchange.getResponseHeaders().add("Content-Type", "application/json");
+            result.setMessage(msg);
+            result.send();
         }
     }
 }

@@ -2,7 +2,6 @@ package com.base.validators;
 
 import com.base.Init;
 import com.base.LoginUser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.http.response.HttpStatus;
 import com.sun.net.httpserver.HttpExchange;
@@ -14,9 +13,9 @@ import java.io.InputStream;
 
 public interface LoginValidator {
     Logger logger = LogManager.getLogger(LoginValidator.class);
-    default void validate(HttpExchange exchange){
+    default void validate(HttpExchange exchange) throws IOException {
 
-        try (InputStream bodyStream = exchange.getRequestBody()){;
+        try (InputStream bodyStream = exchange.getRequestBody()){
             ObjectMapper  mapper = new ObjectMapper();
             String json = new String( bodyStream.readAllBytes());
             LoginUser loginUser = mapper.readValue(json, LoginUser.class);
@@ -34,8 +33,6 @@ public interface LoginValidator {
                 throw new IOException(" can't login " );
             }
 
-        } catch (IOException e) {
-          logger.error("An error occurred",e);
         }
     }
 }
