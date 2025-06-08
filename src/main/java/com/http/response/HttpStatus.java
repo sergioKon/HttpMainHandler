@@ -18,8 +18,8 @@ public enum HttpStatus {
     BAD_GATEWAY(502, "Bad Gateway"),
     UNKNOWN(-1, "Unknown Status");
 
-    private final int code;
-    private final String description;
+    private  int code;
+    private  String description;
 
     HttpStatus(int code, String description) {
         this.code = code;
@@ -30,7 +30,14 @@ public enum HttpStatus {
         return code;
     }
 
+    public void setCode(int code) {
+        this.code= code;
+    }
+
     public String getDescription() {
         return description;
+    }
+    public void  setDescription(String description) {
+        this.description=description;
     }
 }

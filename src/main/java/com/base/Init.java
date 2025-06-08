@@ -1,11 +1,8 @@
 package com.base;
 
-import com.http.handlers.LoginHandler;
-import com.http.handlers.ProtectedHandler;
+import com.http.handlers.MainHttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import org.apache.logging.log4j.*;
-
-import java.io.FileInputStream;
 import java.io.IOException;
 
 import org.apache.logging.log4j.core.config.Configurator;
@@ -31,8 +28,12 @@ public class Init {
         HttpServer server;
         try {
             server = HttpServer.create(new InetSocketAddress(port), backlog);
-            server.createContext("/login", new LoginHandler());
-            server.createContext("/protected", new ProtectedHandler());
+
+            server.createContext("/cancel", new MainHttpHandler());
+            server.createContext("/allow", new MainHttpHandler());
+            server.createContext("/booking", new MainHttpHandler());
+            server.createContext("/approve", new MainHttpHandler());
+
             server.setExecutor(null);
             server.start();
 
