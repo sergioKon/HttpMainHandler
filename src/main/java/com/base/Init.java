@@ -1,6 +1,5 @@
 package com.base;
 
-import com.http.handlers.MainHttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import org.apache.logging.log4j.*;
 import java.io.IOException;
@@ -29,10 +28,10 @@ public class Init {
         try {
             server = HttpServer.create(new InetSocketAddress(port), backlog);
 
-            server.createContext("/cancel", new MainHttpHandler());
-            server.createContext( "/allow", new MainHttpHandler());
-            server.createContext("/booking", new MainHttpHandler());
-            server.createContext("/approve", new MainHttpHandler());
+            server.createContext("/cancel", new MainHttpHandler_2());
+            server.createContext( "/allow", new MainHttpHandler_2());
+            server.createContext("/booking", new MainHttpHandler_2());
+            server.createContext("/approve", new MainHttpHandler_2());
 
             server.setExecutor(null);
             server.start();
