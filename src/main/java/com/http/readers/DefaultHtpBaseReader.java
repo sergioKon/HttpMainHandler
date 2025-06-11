@@ -30,13 +30,4 @@ public class DefaultHtpBaseReader extends HttpBaseReader {
         }
     }
 
-    public  void sendResponse(String message)  {
-
-        try (OutputStream os = httpExchange.getResponseBody()) {
-            httpExchange.sendResponseHeaders(500, message.getBytes().length);
-            os.write(message.getBytes());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

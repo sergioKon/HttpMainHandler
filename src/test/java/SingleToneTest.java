@@ -6,7 +6,6 @@ import java.io.ByteArrayInputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
