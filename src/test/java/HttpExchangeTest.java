@@ -2,6 +2,8 @@ import com.http.handlers.MainHttpHandler;
 import com.http.response.HttpStatus;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,6 +20,7 @@ public class HttpExchangeTest {
 
     @BeforeEach
     public  void initTests(){
+        Configurator.setRootLevel(Level.INFO);
         headers= new Headers();
         headers.clear();
     }
@@ -25,7 +28,6 @@ public class HttpExchangeTest {
     @Test
     public void testHttpExchangeBookingHandler() throws Exception {
         // Mock HttpExchange
-
         headers.add("headerKey", "Allow");
         String body = "name=price&account=100";
         // Mock request body

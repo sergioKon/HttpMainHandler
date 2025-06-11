@@ -13,27 +13,19 @@ public class MainHttpHandler implements HttpHandler {
     public void handle(HttpExchange httpExchange) {
         String relativePath = httpExchange.getRequestURI().getPath();
         LOGGER.info(" main  handler started  {}", relativePath);
-        HttpBaseReader httpBaseReader;
-        String message= "success";
-        switch (relativePath) {
-            case  "/cancel" :
-                httpBaseReader = new CancelHtpBaseReader(httpExchange);
-                break ;
-            case  "/allow" :
-                httpBaseReader = new AllowHttpBaseReader(httpExchange);
-                break ;
-            case  "/booking" :
-                httpBaseReader = new BookingHttpBaseReader(httpExchange);
-                break ;
-            case  "/approve" :
-                httpBaseReader = new ApproveHttpBaseReader(httpExchange);
-                break ;
-            default:
-                LOGGER.warn(" url is not valid ");
-                httpBaseReader = new DefaultHtpBaseReader(httpExchange);
-                message = " default url is not implements ";
-        }
-            httpBaseReader.process();
+
+
+        HttpBaseReader httpBaseReader = switch (relativePath) {
+            case "/cancel" -> new CancelHtpBaseReader(httpExchange);
+            case "/allow" -> new AllowHttpBaseReader(httpExchange);
+            case "/booking" -> new BookingHttpBaseReader(httpExchange);
+            case "/approve" -> new ApproveHttpBaseReader(httpExchange);
+            default -> {
+               LOGGER.warn(" url is not valid ");
+               yield new DefaultHtpBaseReader(httpExchange);
+            }
+        };
+        httpBaseReader.process();
             LOGGER.info(" the content of request =  {}" , httpBaseReader.getBody() );
             httpBaseReader.sendResponse();
     }

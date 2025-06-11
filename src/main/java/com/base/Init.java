@@ -30,7 +30,7 @@ public class Init {
             server = HttpServer.create(new InetSocketAddress(port), backlog);
 
             server.createContext("/cancel", new MainHttpHandler());
-            server.createContext("/allow", new MainHttpHandler());
+            server.createContext( "/allow", new MainHttpHandler());
             server.createContext("/booking", new MainHttpHandler());
             server.createContext("/approve", new MainHttpHandler());
 

@@ -18,6 +18,7 @@ public abstract class HttpBaseReader {
     String body;
     protected final  Logger  logger= LogManager.getLogger(this.getClass());
     protected HttpBaseReader(HttpExchange httpExchange){
+        logger.warn(" class  {} init ", super.getClass());
         this.httpExchange= httpExchange;
         userResponse =new UserResponse();
         InputStream inputStream = httpExchange.getRequestBody();

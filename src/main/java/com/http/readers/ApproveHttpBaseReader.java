@@ -12,7 +12,6 @@ public class ApproveHttpBaseReader extends HttpBaseReader {
     public void process() {
        HttpStatus httpStatus= HttpStatus.OK;
        httpStatus.setDescription(" approve ");
-        userResponse.setHttpStatus(HttpStatus.OK);
-
+       userResponse.setHttpStatus(httpStatus);
     }
 }
